@@ -1,9 +1,6 @@
 #crear_adsr()
-
 #crear_envolvente_guitarra()
-
 #aplicar_envolvente()
-
 import numpy as np
 from config import TipoEnvolvente
 
@@ -66,11 +63,8 @@ def crear_envolvente_guitarra(
     )
 
     ataque = 1 - np.exp(-80*t)
-
     decay = np.exp(-2*t)
-
     env = ataque * decay
-
     env /= np.max(env)
 
     return env

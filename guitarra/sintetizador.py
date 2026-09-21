@@ -2,9 +2,8 @@
 #generar_acorde()
 
 import numpy as np
-import sounddevice as sd
-from config import *
-from notas import NOTAS
+from config import FS, DURACION, TipoEnvolvente
+from .notas import NOTAS
 
 # ============================================
 # Generador de una nota
