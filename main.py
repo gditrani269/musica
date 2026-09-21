@@ -1,6 +1,7 @@
 from config import (
     FS,
     DURACION,
+    SEGUNDOS_POR_TIEMPO,
     VIBRATO,
     RASGUEO,
     VELOCIDAD_RASGUEO,
@@ -23,18 +24,27 @@ for acorde in cancion:
         acorde.tiempos
     )
 """
+
+
 for acorde in cancion:
+    if acorde.nombre not in ACORDES:
+        print(
+            f"Acorde desconocido: {acorde.nombre}"
+        )
+        continue
     notas = ACORDES[acorde.nombre]
+    duracion = acorde.tiempos * SEGUNDOS_POR_TIEMPO
     audio = generar_acorde(
         notas,
         vibrato=VIBRATO,
         rasgueo=RASGUEO,
-        velocidad_rasgueo=VELOCIDAD_RASGUEO
+        velocidad_rasgueo=VELOCIDAD_RASGUEO,
+        duracion=duracion
     )
     audio = aplicar_envolvente(
         audio,
         TipoEnvolvente.GUITARRA,
-        DURACION,
+        duracion,
         FS
     )
     reproducir(

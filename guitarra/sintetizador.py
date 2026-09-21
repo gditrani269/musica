@@ -34,12 +34,13 @@ def generar_nota(frecuencia, t, vibrato=False):
 def generar_acorde(lista_notas,
                    vibrato=False,
                    rasgueo="down",
-                   velocidad_rasgueo=15):
+                   velocidad_rasgueo=15,
+                   duracion=2.0):
 
     t = np.linspace(
         0,
-        DURACION,
-        int(FS*DURACION),
+        duracion,
+        int(FS*duracion),
         endpoint=False
     )
 
@@ -64,6 +65,8 @@ def generar_acorde(lista_notas,
         )
 
         inicio = i * delay
+        if inicio >= len(acorde):
+            break
 
         acorde[inicio:] += nota[:len(acorde)-inicio]
 
