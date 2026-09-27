@@ -1,6 +1,16 @@
-# Acorde   Duración
+#maneja:
+#Tempo
+#duracion del Acorde:
+#   Am 2  (acorde Am y duracion 2)
+#silencios y su duracion
+# - 1   (silencio de duracion 1)
 
-Am   2
-F    2
-E    1
-Am   4
+Tempo=120
+
+Am 2
+- 1
+Am 2
+- 2
+Am 2
+- 4
+Am 2

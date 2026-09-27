@@ -1,11 +1,14 @@
+import numpy as np
+
 from config import (
     FS,
     DURACION,
-    SEGUNDOS_POR_TIEMPO,
+    #SEGUNDOS_POR_TIEMPO,
     VIBRATO,
     RASGUEO,
     VELOCIDAD_RASGUEO,
-    TipoEnvolvente
+    TipoEnvolvente,
+    SILENCIO
 )
 from guitarra.sintetizador import generar_acorde
 from guitarra.envolventes import aplicar_envolvente
@@ -24,16 +27,31 @@ for acorde in cancion:
         acorde.tiempos
     )
 """
+duracion_tiempo = 60 / cancion.tempo_bpm
 
+for acorde in cancion.acordes:
+    duracion = acorde.tiempos * duracion_tiempo
+    if acorde.nombre == "-":
 
-for acorde in cancion:
+    #    duracion = acorde.tiempos * duracion_tiempo
+
+        silencio = np.zeros(
+            int(FS * duracion)
+        )
+
+        reproducir(
+            silencio,
+            FS
+        )
+
+        continue
     if acorde.nombre not in ACORDES:
         print(
             f"Acorde desconocido: {acorde.nombre}"
         )
         continue
     notas = ACORDES[acorde.nombre]
-    duracion = acorde.tiempos * SEGUNDOS_POR_TIEMPO
+#    duracion = acorde.tiempos * duracion_tiempo
     audio = generar_acorde(
         notas,
         vibrato=VIBRATO,

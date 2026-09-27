@@ -1,7 +1,7 @@
 FS = 44100
 
 DURACION = 3
-SEGUNDOS_POR_TIEMPO = 0.5
+#SEGUNDOS_POR_TIEMPO = 0.5
 VIBRATO = False
 
 #TIPO_ENVOLVENTE = "adsr"
@@ -16,3 +16,5 @@ class TipoEnvolvente(Enum):
 RASGUEO = "down"
 
 VELOCIDAD_RASGUEO = 15
+
+SILENCIO = "-"
