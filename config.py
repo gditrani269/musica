@@ -1,6 +1,5 @@
 FS = 44100
 
-DURACION = 3
 #SEGUNDOS_POR_TIEMPO = 0.5
 VIBRATO = False
 
@@ -8,12 +7,14 @@ VIBRATO = False
 from enum import Enum
 
 class TipoEnvolvente(Enum):
-
     ADSR = 1
-
     GUITARRA = 2
 
-RASGUEO = "down"
+class TipoRasgueo(Enum):
+    DOWN = "down"
+    UP = "up"
+
+RASGUEO = TipoRasgueo.DOWN
 
 VELOCIDAD_RASGUEO = 15
 

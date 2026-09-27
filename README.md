@@ -4,3 +4,14 @@
 4 - Patrones completos de rasgueo (↓ ↓ ↑ ↑ ↓ ↑).
 5 - Capo/transposición.
 6 - Lectura de tablaturas.
+
+musica/
+│
+├── guitarra/
+├── audio/
+├── lectura/
+├── canciones/
+│
+├── config.py
+├── main.py
+└── README.md

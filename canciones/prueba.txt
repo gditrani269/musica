@@ -5,12 +5,10 @@
 #silencios y su duracion
 # - 1   (silencio de duracion 1)
 
-Tempo=120
+Tempo=90
 
-Am 2
+Am 4 down
 - 1
-Am 2
-- 2
-Am 2
-- 4
-Am 2
+F 4 up
+E 2 down
+Am 4

@@ -2,7 +2,6 @@ import numpy as np
 
 from config import (
     FS,
-    DURACION,
     #SEGUNDOS_POR_TIEMPO,
     VIBRATO,
     RASGUEO,
@@ -19,14 +18,7 @@ from lectura.lector import leer_cancion
 cancion = leer_cancion(
     "canciones/prueba.txt"
 )
-"""
-for acorde in cancion:
 
-    print(
-        acorde.nombre,
-        acorde.tiempos
-    )
-"""
 duracion_tiempo = 60 / cancion.tempo_bpm
 
 for acorde in cancion.acordes:
@@ -55,7 +47,7 @@ for acorde in cancion.acordes:
     audio = generar_acorde(
         notas,
         vibrato=VIBRATO,
-        rasgueo=RASGUEO,
+        rasgueo=acorde.rasgueo,
         velocidad_rasgueo=VELOCIDAD_RASGUEO,
         duracion=duracion
     )

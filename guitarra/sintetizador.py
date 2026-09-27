@@ -1,8 +1,5 @@
-#generar_nota()
-#generar_acorde()
-
 import numpy as np
-from config import FS, DURACION, TipoEnvolvente
+from config import FS, TipoRasgueo
 from .notas import NOTAS
 
 # ============================================
@@ -33,7 +30,7 @@ def generar_nota(frecuencia, t, vibrato=False):
 
 def generar_acorde(lista_notas,
                    vibrato=False,
-                   rasgueo="down",
+                   rasgueo=TipoRasgueo.DOWN,
                    velocidad_rasgueo=15,
                    duracion=2.0):
 
@@ -49,7 +46,7 @@ def generar_acorde(lista_notas,
     delay = int(velocidad_rasgueo * FS / 1000)
 
     # Dirección del rasgueo
-    if rasgueo == "up":
+    if rasgueo == TipoRasgueo.UP:
         notas = list(reversed(lista_notas))
     else:
         notas = lista_notas

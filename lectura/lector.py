@@ -1,10 +1,11 @@
 from dataclasses import dataclass
-
+from config import TipoRasgueo
 
 @dataclass
 class AcordeCancion:
     nombre: str
     tiempos: int
+    rasgueo: TipoRasgueo
 
 
 @dataclass
@@ -50,10 +51,21 @@ def leer_cancion(archivo):
             else:
                 tiempos = 4
 
+            if len(partes) > 2:
+                try:
+                    rasgueo = TipoRasgueo(partes[2].lower())
+                except ValueError:
+                    raise ValueError(
+                        f"Tipo de rasgueo desconocido: {partes[2]}"
+                    )
+            else:
+                rasgueo = TipoRasgueo.DOWN
+
             acordes.append(
                 AcordeCancion(
                     nombre,
-                    tiempos
+                    tiempos,
+                    rasgueo
                 )
             )
 
