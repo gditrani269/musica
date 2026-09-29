@@ -19,23 +19,28 @@ cancion = leer_cancion(
     "canciones/prueba.txt"
 )
 
+for acorde in cancion.acordes:
+
+    print(
+        acorde.nombre,
+        acorde.tiempos,
+        acorde.rasgueo,
+        acorde.patron
+    )
+
 duracion_tiempo = 60 / cancion.tempo_bpm
 
 for acorde in cancion.acordes:
     duracion = acorde.tiempos * duracion_tiempo
+    print ("duracion:", duracion)
     if acorde.nombre == "-":
-
-    #    duracion = acorde.tiempos * duracion_tiempo
-
         silencio = np.zeros(
             int(FS * duracion)
         )
-
         reproducir(
             silencio,
             FS
         )
-
         continue
     if acorde.nombre not in ACORDES:
         print(
@@ -43,11 +48,11 @@ for acorde in cancion.acordes:
         )
         continue
     notas = ACORDES[acorde.nombre]
-#    duracion = acorde.tiempos * duracion_tiempo
     audio = generar_acorde(
         notas,
         vibrato=VIBRATO,
         rasgueo=acorde.rasgueo,
+        patron=acorde.patron,
         velocidad_rasgueo=VELOCIDAD_RASGUEO,
         duracion=duracion
     )

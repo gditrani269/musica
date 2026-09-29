@@ -1,11 +1,12 @@
 from dataclasses import dataclass
-from config import TipoRasgueo
+from config import TipoRasgueo, RASGUEO
 
 @dataclass
 class AcordeCancion:
     nombre: str
     tiempos: int
     rasgueo: TipoRasgueo
+    patron: list[TipoRasgueo]
 
 
 @dataclass
@@ -51,21 +52,52 @@ def leer_cancion(archivo):
             else:
                 tiempos = 4
 
+            rasgueo = RASGUEO
+            patron = []
+
             if len(partes) > 2:
-                try:
-                    rasgueo = TipoRasgueo(partes[2].lower())
-                except ValueError:
-                    raise ValueError(
-                        f"Tipo de rasgueo desconocido: {partes[2]}"
-                    )
-            else:
-                rasgueo = TipoRasgueo.DOWN
+
+                if partes[2].lower() in ("down", "up"):
+
+                    try:
+                        rasgueo = TipoRasgueo(
+                            partes[2].lower()
+                        )
+
+                    except ValueError:
+                        raise ValueError(
+                            f"Tipo de rasgueo desconocido: {partes[2]}"
+                        )
+
+                else:
+
+                    for golpe in partes[2:]:
+                        print("golpe leído:", golpe)
+
+                        if golpe.upper() == "D":
+
+                            patron.append(
+                                TipoRasgueo.DOWN
+                            )
+
+                        elif golpe.upper() == "U":
+
+                            patron.append(
+                                TipoRasgueo.UP
+                            )
+
+                        else:
+
+                            raise ValueError(
+                                f"Golpe de rasgueo desconocido: {golpe}"
+                            )
 
             acordes.append(
                 AcordeCancion(
                     nombre,
                     tiempos,
-                    rasgueo
+                    rasgueo,
+                    patron
                 )
             )
 

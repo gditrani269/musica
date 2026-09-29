@@ -25,48 +25,93 @@ def generar_nota(frecuencia, t, vibrato=False):
     return nota
 
 # ============================================
-# Generar un acorde
+# Generar un acorde basico
+# ============================================
+def generar_acorde(
+    lista_notas,
+    vibrato=False,
+    rasgueo=TipoRasgueo.DOWN,
+    patron=None,
+    velocidad_rasgueo=15,
+    duracion=2.0
+):
+
+    if not patron:
+        patron = [rasgueo]
+
+    return _generar_patron(
+        lista_notas,
+        patron,
+        vibrato=vibrato,
+        velocidad_rasgueo=velocidad_rasgueo,
+        duracion=duracion
+    )
+
+# ============================================
+# Generar un acorde basico
 # ============================================
 
-def generar_acorde(lista_notas,
+def _generar_rasgueo(lista_notas,
                    vibrato=False,
                    rasgueo=TipoRasgueo.DOWN,
                    velocidad_rasgueo=15,
                    duracion=2.0):
-
     t = np.linspace(
         0,
         duracion,
         int(FS*duracion),
         endpoint=False
     )
-
     acorde = np.zeros_like(t)
-
     delay = int(velocidad_rasgueo * FS / 1000)
-
     # Dirección del rasgueo
     if rasgueo == TipoRasgueo.UP:
         notas = list(reversed(lista_notas))
     else:
         notas = lista_notas
-
     for i, nombre_nota in enumerate(notas):
-
         frecuencia = NOTAS[nombre_nota]
-
         nota = generar_nota(
             frecuencia,
             t,
             vibrato
         )
-
         inicio = i * delay
         if inicio >= len(acorde):
             break
-
         acorde[inicio:] += nota[:len(acorde)-inicio]
-
     acorde /= np.max(np.abs(acorde))
-
     return acorde
+
+def _generar_patron(
+    lista_notas,
+    patron,
+    vibrato=False,
+    velocidad_rasgueo=15,
+    duracion=2.0
+):
+
+    audio = []
+
+    if not patron:
+
+        return np.array([])
+
+    duracion_paso = duracion / len(patron)
+
+    for accion in patron:
+
+        if accion in (TipoRasgueo.DOWN, TipoRasgueo.UP):
+
+            segmento = _generar_rasgueo(
+                lista_notas,
+                vibrato=vibrato,
+                rasgueo=accion,
+                velocidad_rasgueo=velocidad_rasgueo,
+                duracion=duracion_paso
+            )
+
+            audio.append(segmento)
+
+
+    return np.concatenate(audio)
