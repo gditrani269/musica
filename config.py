@@ -1,3 +1,4 @@
+from guitarra.rasgueos import TipoRasgueo
 FS = 44100
 
 #SEGUNDOS_POR_TIEMPO = 0.5
@@ -10,9 +11,6 @@ class TipoEnvolvente(Enum):
     ADSR = 1
     GUITARRA = 2
 
-class TipoRasgueo(Enum):
-    DOWN = "down"
-    UP = "up"
 
 RASGUEO = TipoRasgueo.DOWN
 

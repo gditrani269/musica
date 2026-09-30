@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from config import TipoRasgueo, RASGUEO
+from guitarra.rasgueos import TipoRasgueo
 
 @dataclass
 class AcordeCancion:
@@ -52,7 +52,7 @@ def leer_cancion(archivo):
             else:
                 tiempos = 4
 
-            rasgueo = RASGUEO
+            rasgueo = TipoRasgueo.DOWN
             patron = []
 
             if len(partes) > 2:

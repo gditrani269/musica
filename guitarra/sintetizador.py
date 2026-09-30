@@ -1,5 +1,6 @@
 import numpy as np
-from config import FS, TipoRasgueo
+from config import FS
+from guitarra.rasgueos import TipoRasgueo
 from .notas import NOTAS
 
 # ============================================
