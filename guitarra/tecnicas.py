@@ -13,3 +13,5 @@ class TipoTecnica(Enum):
     PUNTEO = "punteo"
 
     ARPEGIO = "arpegio"
+
+    SILENCIO = "silencio"

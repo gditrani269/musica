@@ -1,3 +1,12 @@
+Para armar un entorno con conda:
+conda create --name musica python=3.12
+conda env list
+conda activate musica
+conda deactivate
+
+python -m pip install --upgrade pip
+
+
 1 - Silencios (muy fácil y mejora mucho el resultado).
 2 - Rasgueos por acorde (empieza la parte realmente "guitarrística").
 3 - Compás (4/4, 3/4, etc.).

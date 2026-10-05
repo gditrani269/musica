@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 from guitarra.rasgueos import TipoRasgueo
+from guitarra.evento import EventoMusical
+from guitarra.tecnicas import TipoTecnica
+from guitarra.acordes import ACORDES
 
 @dataclass
 class AcordeCancion:
@@ -105,3 +108,29 @@ def leer_cancion(archivo):
         tempo_bpm=tempo_bpm,
         acordes=acordes
     )
+
+def crear_eventos(cancion):
+
+    eventos = []
+
+    for acorde in cancion.acordes:
+        if acorde.nombre == "-":
+            continue
+        evento = EventoMusical(
+            notas=ACORDES[acorde.nombre],
+            tecnica=TipoTecnica.RASGUEO,
+            tiempos=acorde.tiempos,
+            patron=acorde.patron
+        )
+
+        eventos.append(evento)
+
+    return eventos
+
+def leer_eventos(archivo):
+
+    cancion = leer_cancion(archivo)
+
+    eventos = crear_eventos(cancion)
+
+    return eventos, cancion.tempo_bpm

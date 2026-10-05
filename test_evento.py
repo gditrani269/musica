@@ -1,22 +1,31 @@
-from guitarra.evento import EventoMusical
-from guitarra.tecnicas import TipoTecnica
-from guitarra.rasgueos import TipoRasgueo
-from guitarra.acordes import ACORDES
+import numpy as np
+
+from lectura.lector import leer_eventos
+from guitarra.sintetizador import reproducir_evento
+from audio.reproductor import reproducir
+from config import FS
 
 
-evento = EventoMusical(
-    notas=ACORDES["Am"],
-    tecnica=TipoTecnica.RASGUEO,
-    patron=[
-        TipoRasgueo.DOWN,
-        TipoRasgueo.DOWN,
-        TipoRasgueo.UP,
-        TipoRasgueo.UP,
-        TipoRasgueo.DOWN,
-        TipoRasgueo.UP
-    ],
-    duracion=2
+eventos, tempo_bpm = leer_eventos(
+    "canciones/prueba.txt"
 )
 
 
-print(evento)
+audio_total = np.array([])
+
+
+for evento in eventos:
+
+    print(evento)
+
+    audio = reproducir_evento(
+        evento,
+        tempo_bpm
+    )
+
+    audio_total = np.concatenate(
+        (audio_total, audio)
+    )
+
+
+reproducir(audio_total, FS)

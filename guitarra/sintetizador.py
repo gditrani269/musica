@@ -1,7 +1,11 @@
 import numpy as np
-from config import FS
+from config import FS, TipoEnvolvente
 from guitarra.rasgueos import TipoRasgueo
 from .notas import NOTAS
+
+from guitarra.evento import EventoMusical
+from guitarra.tecnicas import TipoTecnica
+from guitarra.envolventes import aplicar_envolvente
 
 # ============================================
 # Generador de una nota
@@ -84,6 +88,36 @@ def _generar_rasgueo(lista_notas,
     acorde /= np.max(np.abs(acorde))
     return acorde
 
+def _generar_punteo(
+    lista_notas,
+    vibrato=False,
+    duracion=2.0
+):
+
+    t = np.linspace(
+        0,
+        duracion,
+        int(FS * duracion),
+        endpoint=False
+    )
+
+    frecuencia = NOTAS[lista_notas[0]]
+
+    nota = generar_nota(
+        frecuencia,
+        t,
+        vibrato
+    )
+
+    nota = aplicar_envolvente(
+        nota,
+        TipoEnvolvente.GUITARRA,
+        duracion,
+        FS
+    )
+
+    return nota
+
 def _generar_patron(
     lista_notas,
     patron,
@@ -116,3 +150,29 @@ def _generar_patron(
 
 
     return np.concatenate(audio)
+
+def reproducir_evento(evento: EventoMusical, tempo_bpm):
+
+    if evento.tecnica == TipoTecnica.RASGUEO:
+
+        return generar_acorde(
+            lista_notas=evento.notas,
+            vibrato=evento.vibrato,
+            patron=evento.patron,
+            velocidad_rasgueo=evento.velocidad_rasgueo,
+            duracion=evento.tiempos * (60 / tempo_bpm)
+        )
+
+    if evento.tecnica == TipoTecnica.PUNTEO:
+
+        duracion = evento.tiempos * (60 / tempo_bpm)
+
+        return _generar_punteo(
+            lista_notas=evento.notas,
+            vibrato=evento.vibrato,
+            duracion=duracion
+        )
+
+    raise NotImplementedError(
+        f"Técnica no soportada: {evento.tecnica}"
+    )
