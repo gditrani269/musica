@@ -12,10 +12,10 @@ Tempo=150
 #G 2 D D U D U
 #G 4 up
 #G 4 down
-B5 2 D D D D
+A B5 2 D D D D
 - 1
-F#5 1 D D
+A F#5 1 D D
 - 1
-G5 2 D D D D
+P G5 2 D D D D
 - 1
 E5 1 D D

@@ -7,7 +7,7 @@ from config import FS
 
 
 eventos, tempo_bpm = leer_eventos(
-    "canciones/prueba.txt"
+    "canciones/prueba2.txt"
 )
 
 

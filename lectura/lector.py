@@ -3,9 +3,11 @@ from guitarra.rasgueos import TipoRasgueo
 from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
 from guitarra.acordes import ACORDES
+from guitarra.tipos_evento import TipoEvento
 
 @dataclass
 class AcordeCancion:
+    tipo: TipoEvento
     nombre: str
     tiempos: int
     rasgueo: TipoRasgueo
@@ -48,6 +50,22 @@ def leer_cancion(archivo):
 
             partes = linea.split()
 
+            #---------------------------------
+            # Compatibilidad con el formato nuevo
+            if partes[0] == "A":
+                tipo = TipoEvento.ACORDE
+                partes = partes[1:]
+
+            elif partes[0] == "P":
+                tipo = TipoEvento.PUNTEO
+                partes = partes[1:]
+
+            # Compatibilidad con el formato viejo
+            else:
+
+                tipo = TipoEvento.ACORDE
+            #---------------------------------
+            
             nombre = partes[0]
 
             if len(partes) > 1:
@@ -97,6 +115,7 @@ def leer_cancion(archivo):
 
             acordes.append(
                 AcordeCancion(
+                    tipo,
                     nombre,
                     tiempos,
                     rasgueo,
@@ -114,11 +133,34 @@ def crear_eventos(cancion):
     eventos = []
 
     for acorde in cancion.acordes:
+
         if acorde.nombre == "-":
+
+            evento = EventoMusical(
+                notas=[],
+                tecnica=TipoTecnica.SILENCIO,
+                tiempos=acorde.tiempos,
+                patron=[]
+            )
+
+            eventos.append(evento)
+
             continue
+
+        if acorde.tipo == TipoEvento.ACORDE:
+
+            notas = ACORDES[acorde.nombre]
+            tecnica = TipoTecnica.RASGUEO
+
+        elif acorde.tipo == TipoEvento.PUNTEO:
+
+            notas = [acorde.nombre]
+            tecnica = TipoTecnica.PUNTEO
+
+
         evento = EventoMusical(
-            notas=ACORDES[acorde.nombre],
-            tecnica=TipoTecnica.RASGUEO,
+            notas=notas,
+            tecnica=tecnica,
             tiempos=acorde.tiempos,
             patron=acorde.patron
         )

@@ -173,6 +173,14 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             duracion=duracion
         )
 
+    if evento.tecnica == TipoTecnica.SILENCIO:
+
+        duracion = evento.tiempos * (60 / tempo_bpm)
+
+        return np.zeros(
+            int(FS * duracion)
+        )
+
     raise NotImplementedError(
         f"Técnica no soportada: {evento.tecnica}"
     )
