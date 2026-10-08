@@ -1,10 +1,10 @@
 Tempo=180
 
+P A2 2
 A Am 4 D U
-P A3 1
 - 1
+P F2 2
 A F 4 D U
-P F3 1
 - 1
 P A3 1
 P G3 1
@@ -16,5 +16,5 @@ P E3 1
 P E2 1
 P G2 1
 P A2 1
-P C2 1
+P C3 1
 P A2 1

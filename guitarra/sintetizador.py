@@ -6,6 +6,7 @@ from .notas import NOTAS
 from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
 from guitarra.envolventes import aplicar_envolvente
+from config import FS, VELOCIDAD_RASGUEO
 
 # ============================================
 # Generador de una nota
@@ -37,7 +38,7 @@ def generar_acorde(
     vibrato=False,
     rasgueo=TipoRasgueo.DOWN,
     patron=None,
-    velocidad_rasgueo=15,
+    velocidad_rasgueo=VELOCIDAD_RASGUEO,
     duracion=2.0
 ):
 
@@ -59,7 +60,7 @@ def generar_acorde(
 def _generar_rasgueo(lista_notas,
                    vibrato=False,
                    rasgueo=TipoRasgueo.DOWN,
-                   velocidad_rasgueo=15,
+                   velocidad_rasgueo=VELOCIDAD_RASGUEO,
                    duracion=2.0):
     t = np.linspace(
         0,
@@ -81,10 +82,11 @@ def _generar_rasgueo(lista_notas,
             t,
             vibrato
         )
+        volumen = 1.0 - (i * 0.15)
         inicio = i * delay
         if inicio >= len(acorde):
             break
-        acorde[inicio:] += nota[:len(acorde)-inicio]
+        acorde[inicio:] += volumen * nota[:len(acorde)-inicio]
     acorde /= np.max(np.abs(acorde))
     return acorde
 
@@ -122,7 +124,7 @@ def _generar_patron(
     lista_notas,
     patron,
     vibrato=False,
-    velocidad_rasgueo=15,
+    velocidad_rasgueo=VELOCIDAD_RASGUEO,
     duracion=2.0
 ):
 
@@ -163,7 +165,7 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             duracion=evento.tiempos * (60 / tempo_bpm)
         )
 
-    if evento.tecnica == TipoTecnica.PUNTEO:
+    elif evento.tecnica == TipoTecnica.PUNTEO:
 
         duracion = evento.tiempos * (60 / tempo_bpm)
 
@@ -173,7 +175,7 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             duracion=duracion
         )
 
-    if evento.tecnica == TipoTecnica.SILENCIO:
+    elif evento.tecnica == TipoTecnica.SILENCIO:
 
         duracion = evento.tiempos * (60 / tempo_bpm)
 

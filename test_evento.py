@@ -17,6 +17,7 @@ audio_total = np.array([])
 for evento in eventos:
 
     print(evento)
+    print("Velocidad:", evento.velocidad_rasgueo)
 
     audio = reproducir_evento(
         evento,

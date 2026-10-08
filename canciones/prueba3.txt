@@ -1,0 +1,8 @@
+Tempo=180
+
+A Am 4 D U
+- 1
+A Am 4 D
+- 1
+A Am 4 U
+

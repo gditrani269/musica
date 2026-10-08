@@ -67,6 +67,13 @@ def crear_envolvente_guitarra(
     env = ataque * decay
     env /= np.max(env)
 
+    release = int(0.01 * fs)
+
+    env[-release:] *= np.linspace(
+        1,
+        0,
+        release
+    )
     return env
 
 def aplicar_envolvente(audio, tipo, duracion, fs):
@@ -90,5 +97,7 @@ def aplicar_envolvente(audio, tipo, duracion, fs):
         raise ValueError(
             f"Tipo de envolvente desconocido: {tipo}"
         )
+    print("Primer valor env:", env[0])
+    print("Último valor env:", env[-1])
 
     return audio * env
