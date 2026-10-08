@@ -4,6 +4,7 @@ from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
 from guitarra.acordes import ACORDES
 from guitarra.tipos_evento import TipoEvento
+from guitarra.instrumentos import TipoGuitarra
 
 @dataclass
 class AcordeCancion:
@@ -12,6 +13,7 @@ class AcordeCancion:
     tiempos: int
     rasgueo: TipoRasgueo
     patron: list[TipoRasgueo]
+    instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
 
 
 @dataclass
@@ -24,6 +26,7 @@ def leer_cancion(archivo):
 
     tempo_bpm = 120          # valor por defecto
     acordes = []
+    instrumento_actual = TipoGuitarra.ACUSTICA
 
     with open(archivo, "r", encoding="utf-8") as f:
 
@@ -45,6 +48,19 @@ def leer_cancion(archivo):
                 tempo_bpm = int(
                     linea.split("=")[1].strip()
                 )
+
+                continue
+            
+            if linea.upper().startswith("G="):
+
+                nombre_instrumento = linea.split("=", 1)[1].strip().upper()
+
+                try:
+                    instrumento_actual = TipoGuitarra[nombre_instrumento]
+                except KeyError:
+                    raise ValueError(
+                        f"Instrumento desconocido: {nombre_instrumento}"
+                    )
 
                 continue
 
@@ -119,7 +135,8 @@ def leer_cancion(archivo):
                     nombre,
                     tiempos,
                     rasgueo,
-                    patron
+                    patron,
+                    instrumento_actual
                 )
             )
 
@@ -140,7 +157,8 @@ def crear_eventos(cancion):
                 notas=[],
                 tecnica=TipoTecnica.SILENCIO,
                 tiempos=acorde.tiempos,
-                patron=[]
+                patron=[],
+                instrumento=acorde.instrumento
             )
 
             eventos.append(evento)
@@ -162,7 +180,8 @@ def crear_eventos(cancion):
             notas=notas,
             tecnica=tecnica,
             tiempos=acorde.tiempos,
-            patron=acorde.patron
+            patron=acorde.patron,
+            instrumento=acorde.instrumento
         )
 
         eventos.append(evento)

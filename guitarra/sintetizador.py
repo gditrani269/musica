@@ -24,13 +24,31 @@ def generar_nota(frecuencia, t, vibrato=False, instrumento=TipoGuitarra.ACUSTICA
     else:
         f = frecuencia
 
-    nota = (
-        1.00 * np.sin(2*np.pi*1*f*t) +
-        0.50 * np.sin(2*np.pi*2*f*t) +
-        0.30 * np.sin(2*np.pi*3*f*t) +
-        0.20 * np.sin(2*np.pi*4*f*t) +
-        0.10 * np.sin(2*np.pi*5*f*t)
-    )
+    # Modelo de guitarra acústica actual
+    if instrumento == TipoGuitarra.ACUSTICA:
+
+        nota = (
+            1.00 * np.sin(2 * np.pi * 1 * f * t) +
+            0.50 * np.sin(2 * np.pi * 2 * f * t) +
+            0.30 * np.sin(2 * np.pi * 3 * f * t) +
+            0.20 * np.sin(2 * np.pi * 4 * f * t) +
+            0.10 * np.sin(2 * np.pi * 5 * f * t)
+        )
+
+    # Modelo experimental de guitarra eléctrica limpia
+    elif instrumento == TipoGuitarra.ELECTRICA_LIMPIA:
+
+        nota = (
+            1.00 * np.sin(2 * np.pi * 1 * f * t) +
+            0.25 * np.sin(2 * np.pi * 2 * f * t) +
+            0.10 * np.sin(2 * np.pi * 3 * f * t) +
+            0.04 * np.sin(2 * np.pi * 4 * f * t)
+        )
+
+    else:
+        raise ValueError(
+            f"Instrumento no soportado: {instrumento}"
+        )
 
     return nota
 
