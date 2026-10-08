@@ -18,6 +18,7 @@ for evento in eventos:
 
     print(evento)
     print("Velocidad:", evento.velocidad_rasgueo)
+    print(evento.instrumento)
 
     audio = reproducir_evento(
         evento,

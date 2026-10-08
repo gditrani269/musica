@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from guitarra.tecnicas import TipoTecnica
 from guitarra.rasgueos import TipoRasgueo
 from config import VELOCIDAD_RASGUEO
+from guitarra.instrumentos import TipoGuitarra
 
 
 @dataclass
@@ -25,6 +26,8 @@ class EventoMusical:
     vibrato: bool = False
 
     velocidad_rasgueo: int = VELOCIDAD_RASGUEO
+
+    instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
 
     def __str__(self):
 
