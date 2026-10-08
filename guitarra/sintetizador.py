@@ -11,6 +11,7 @@ from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
 from guitarra.envolventes import aplicar_envolvente
 from guitarra.instrumentos import TipoGuitarra
+from guitarra.efectos import aplicar_distorsion
 
 # ============================================
 # Generador de una nota
@@ -44,6 +45,16 @@ def generar_nota(frecuencia, t, vibrato=False, instrumento=TipoGuitarra.ACUSTICA
             0.10 * np.sin(2 * np.pi * 3 * f * t) +
             0.04 * np.sin(2 * np.pi * 4 * f * t)
         )
+
+    elif instrumento == TipoGuitarra.ELECTRICA_DISTORSION:
+        nota = (
+            1.00 * np.sin(2 * np.pi * 1 * f * t) +
+            0.25 * np.sin(2 * np.pi * 2 * f * t) +
+            0.10 * np.sin(2 * np.pi * 3 * f * t) +
+            0.04 * np.sin(2 * np.pi * 4 * f * t)
+        )
+
+        nota = aplicar_distorsion(nota, ganancia=3.0)
 
     else:
         raise ValueError(
