@@ -10,7 +10,7 @@ from guitarra.instrumentos import TipoGuitarra
 
 
 eventos, tempo_bpm = leer_eventos(
-    "canciones/prueba2.txt"
+    "canciones/prueba3.txt"
 )
 
 
@@ -23,6 +23,29 @@ for evento in eventos:
     print("Velocidad:", evento.velocidad_rasgueo)
     print(evento.instrumento)
 
+
+    audio = reproducir_evento(
+        evento,
+        tempo_bpm
+    )
+
+    audio_total = np.concatenate(
+        (audio_total, audio)
+    )
+
+
+reproducir(audio_total, FS)
+
+audio_total = np.array([])
+for evento in eventos:
+
+    print(evento)
+    print("Velocidad:", evento.velocidad_rasgueo)
+    print(evento.instrumento)
+
+
+    print("Evento.distorsion =", evento.distorsion)
+    print(evento.instrumento, evento.distorsion)
     audio = reproducir_evento(
         evento,
         tempo_bpm

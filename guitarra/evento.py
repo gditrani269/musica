@@ -29,6 +29,8 @@ class EventoMusical:
 
     instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
 
+    distorsion: float = 0.0
+
     def __str__(self):
 
         if self.patron:

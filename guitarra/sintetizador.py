@@ -17,7 +17,12 @@ from guitarra.efectos import aplicar_distorsion
 # Generador de una nota
 # ============================================
 
-def generar_nota(frecuencia, t, vibrato=False, instrumento=TipoGuitarra.ACUSTICA):
+def generar_nota(frecuencia, 
+                 t, 
+                 vibrato=False, 
+                 instrumento=TipoGuitarra.ACUSTICA,
+                 distorsion=0.0
+                 ):
 
     if vibrato:
         mod = 0.003 * np.sin(2*np.pi*5*t)
@@ -47,6 +52,7 @@ def generar_nota(frecuencia, t, vibrato=False, instrumento=TipoGuitarra.ACUSTICA
         )
 
     elif instrumento == TipoGuitarra.ELECTRICA_DISTORSION:
+
         nota = (
             1.00 * np.sin(2 * np.pi * 1 * f * t) +
             0.25 * np.sin(2 * np.pi * 2 * f * t) +
@@ -54,13 +60,20 @@ def generar_nota(frecuencia, t, vibrato=False, instrumento=TipoGuitarra.ACUSTICA
             0.04 * np.sin(2 * np.pi * 4 * f * t)
         )
 
-        nota = aplicar_distorsion(nota, ganancia=3.0)
-
     else:
+
         raise ValueError(
             f"Instrumento no soportado: {instrumento}"
         )
 
+    if distorsion > 0:
+
+        nota = aplicar_distorsion(
+            nota,
+            ganancia=distorsion
+        )
+
+    print("Distorsion recibida:", distorsion)
     return nota
 
 # ============================================
@@ -73,7 +86,8 @@ def generar_acorde(
     patron=None,
     velocidad_rasgueo=VELOCIDAD_RASGUEO,
     duracion=2.0,
-    instrumento=TipoGuitarra.ACUSTICA
+    instrumento=TipoGuitarra.ACUSTICA,
+    distorsion=0.0
 ):
 
     if not patron:
@@ -85,7 +99,8 @@ def generar_acorde(
         vibrato=vibrato,
         velocidad_rasgueo=velocidad_rasgueo,
         duracion=duracion,
-        instrumento=instrumento
+        instrumento=instrumento,
+        distorsion=distorsion
     )
 
 # ============================================
@@ -97,7 +112,8 @@ def _generar_rasgueo(lista_notas,
                    rasgueo=TipoRasgueo.DOWN,
                    velocidad_rasgueo=VELOCIDAD_RASGUEO,
                    duracion=2.0,
-                   instrumento=TipoGuitarra.ACUSTICA):
+                   instrumento=TipoGuitarra.ACUSTICA,
+                   distorsion=0.0):
     t = np.linspace(
         0,
         duracion,
@@ -117,7 +133,8 @@ def _generar_rasgueo(lista_notas,
             frecuencia,
             t,
             vibrato,
-            instrumento
+            instrumento,
+            distorsion
         )
         volumen = 1.0 - (i * 0.15)
         inicio = i * delay
@@ -131,7 +148,8 @@ def _generar_punteo(
     lista_notas,
     vibrato=False,
     duracion=2.0,
-    instrumento=TipoGuitarra.ACUSTICA
+    instrumento=TipoGuitarra.ACUSTICA,
+    distorsion=0.0
 ):
 
     t = np.linspace(
@@ -147,7 +165,8 @@ def _generar_punteo(
         frecuencia,
         t,
         vibrato,
-        instrumento
+        instrumento,
+        distorsion
     )
 
     nota = aplicar_envolvente(
@@ -165,7 +184,8 @@ def _generar_patron(
     vibrato=False,
     velocidad_rasgueo=VELOCIDAD_RASGUEO,
     duracion=2.0,
-    instrumento=TipoGuitarra.ACUSTICA
+    instrumento=TipoGuitarra.ACUSTICA,
+    distorsion=0.0
 ):
 
     audio = []
@@ -186,7 +206,8 @@ def _generar_patron(
                 rasgueo=accion,
                 velocidad_rasgueo=velocidad_rasgueo,
                 duracion=duracion_paso,
-                instrumento=instrumento
+                instrumento=instrumento,
+                distorsion=distorsion
             )
 
             audio.append(segmento)
@@ -204,7 +225,8 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             patron=evento.patron,
             velocidad_rasgueo=evento.velocidad_rasgueo,
             duracion=evento.tiempos * (60 / tempo_bpm),
-            instrumento=evento.instrumento
+            instrumento=evento.instrumento,
+            distorsion=evento.distorsion
         )
 
     elif evento.tecnica == TipoTecnica.PUNTEO:
@@ -215,7 +237,8 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             lista_notas=evento.notas,
             vibrato=evento.vibrato,
             duracion=duracion,
-            instrumento=evento.instrumento
+            instrumento=evento.instrumento,
+            distorsion=evento.distorsion
         )
 
     elif evento.tecnica == TipoTecnica.SILENCIO:

@@ -14,6 +14,7 @@ class AcordeCancion:
     rasgueo: TipoRasgueo
     patron: list[TipoRasgueo]
     instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
+    distorsion: float = 0.0
 
 
 @dataclass
@@ -26,7 +27,6 @@ def leer_cancion(archivo):
 
     tempo_bpm = 120          # valor por defecto
     acordes = []
-    instrumento_actual = TipoGuitarra.ACUSTICA
 
     with open(archivo, "r", encoding="utf-8") as f:
 
@@ -50,19 +50,22 @@ def leer_cancion(archivo):
                 )
 
                 continue
-            
-            if linea.upper().startswith("G="):
 
-                nombre_instrumento = linea.split("=", 1)[1].strip().upper()
+            atributos = {}
 
-                try:
-                    instrumento_actual = TipoGuitarra[nombre_instrumento]
-                except KeyError:
-                    raise ValueError(
-                        f"Instrumento desconocido: {nombre_instrumento}"
-                    )
+            if "{" in linea:
 
-                continue
+                datos, extras = linea.split("{", 1)
+
+                extras = extras.replace("}", "").strip()
+
+                for atributo in extras.split():
+
+                    clave, valor = atributo.split("=")
+
+                    atributos[clave.upper()] = valor
+
+                linea = datos.strip()
 
             partes = linea.split()
 
@@ -91,6 +94,28 @@ def leer_cancion(archivo):
 
             rasgueo = TipoRasgueo.DOWN
             patron = []
+            instrumento = TipoGuitarra.ACUSTICA
+            distorsion = 0.0
+
+            if "G" in atributos:
+
+                try:
+                    instrumento = TipoGuitarra[
+                        atributos["G"].upper()
+                    ]
+
+                except KeyError:
+
+                    raise ValueError(
+                        f"Instrumento desconocido: {atributos['G']}"
+                    )
+
+
+            if "DIST" in atributos:
+
+                distorsion = float(
+                    atributos["DIST"]
+                )
 
             if len(partes) > 2:
 
@@ -136,7 +161,8 @@ def leer_cancion(archivo):
                     tiempos,
                     rasgueo,
                     patron,
-                    instrumento_actual
+                    instrumento,
+                    distorsion
                 )
             )
 
@@ -158,7 +184,8 @@ def crear_eventos(cancion):
                 tecnica=TipoTecnica.SILENCIO,
                 tiempos=acorde.tiempos,
                 patron=[],
-                instrumento=acorde.instrumento
+                instrumento=acorde.instrumento,
+                distorsion=acorde.distorsion
             )
 
             eventos.append(evento)
@@ -181,7 +208,8 @@ def crear_eventos(cancion):
             tecnica=tecnica,
             tiempos=acorde.tiempos,
             patron=acorde.patron,
-            instrumento=acorde.instrumento
+            instrumento=acorde.instrumento,
+            distorsion=acorde.distorsion
         )
 
         eventos.append(evento)
