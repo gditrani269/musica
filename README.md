@@ -58,3 +58,21 @@ _generar_patron() generar_nota()
     └──────┬───────┘
            ▼
       aplicar_envolvente()
+
+      
+
+lector.py
+|
+genera EventoMusical
+|
+efectos=Efectos(distorsion=8)
+|
+reproducir_evento()
+|
+sintetizador.py
+|
+generar_nota()
+|
+procesador.py
+|
+distorsion.py

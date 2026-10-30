@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from guitarra.rasgueos import TipoRasgueo
 from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
@@ -15,7 +15,7 @@ class AcordeCancion:
     rasgueo: TipoRasgueo
     patron: list[TipoRasgueo]
     instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
-    distorsion: float = 0.0
+    efectos: Efectos = field(default_factory=Efectos)
 
 
 @dataclass
@@ -56,17 +56,24 @@ def leer_cancion(archivo):
 
             if "{" in linea:
 
-                datos, extras = linea.split("{", 1)
+                inicio = linea.index("{")
+                fin = linea.index("}")
 
-                extras = extras.replace("}", "").strip()
+                extras = linea[inicio + 1:fin]
 
                 for atributo in extras.split():
 
-                    clave, valor = atributo.split("=")
 
-                    atributos[clave.upper()] = valor
+                    if "=" in atributo:
 
-                linea = datos.strip()
+                        clave, valor = atributo.split("=", 1)
+
+                        atributos[clave.upper()] = valor
+
+                linea = (
+                    linea[:inicio] +
+                    linea[fin + 1:]
+                ).strip()
 
             partes = linea.split()
 
@@ -96,7 +103,7 @@ def leer_cancion(archivo):
             rasgueo = TipoRasgueo.DOWN
             patron = []
             instrumento = TipoGuitarra.ACUSTICA
-            distorsion = 0.0
+            efectos = Efectos()
 
             if "G" in atributos:
 
@@ -114,7 +121,7 @@ def leer_cancion(archivo):
 
             if "DIST" in atributos:
 
-                distorsion = float(
+                efectos.distorsion = float(
                     atributos["DIST"]
                 )
 
@@ -163,7 +170,7 @@ def leer_cancion(archivo):
                     rasgueo,
                     patron,
                     instrumento,
-                    distorsion
+                    efectos
                 )
             )
 
@@ -186,9 +193,7 @@ def crear_eventos(cancion):
                 tiempos=acorde.tiempos,
                 patron=[],
                 instrumento=acorde.instrumento,
-                efectos=Efectos(
-                    distorsion=acorde.distorsion
-                )
+                efectos=acorde.efectos
             )
 
             eventos.append(evento)
@@ -212,9 +217,7 @@ def crear_eventos(cancion):
             tiempos=acorde.tiempos,
             patron=acorde.patron,
             instrumento=acorde.instrumento,
-            efectos=Efectos(
-                distorsion=acorde.distorsion
-            )
+            efectos=acorde.efectos
         )
 
         eventos.append(evento)
