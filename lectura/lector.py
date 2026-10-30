@@ -5,6 +5,7 @@ from guitarra.tecnicas import TipoTecnica
 from guitarra.acordes import ACORDES
 from guitarra.tipos_evento import TipoEvento
 from guitarra.instrumentos import TipoGuitarra
+from guitarra.efectos.modelo import Efectos
 
 @dataclass
 class AcordeCancion:
@@ -185,7 +186,9 @@ def crear_eventos(cancion):
                 tiempos=acorde.tiempos,
                 patron=[],
                 instrumento=acorde.instrumento,
-                distorsion=acorde.distorsion
+                efectos=Efectos(
+                    distorsion=acorde.distorsion
+                )
             )
 
             eventos.append(evento)
@@ -209,7 +212,9 @@ def crear_eventos(cancion):
             tiempos=acorde.tiempos,
             patron=acorde.patron,
             instrumento=acorde.instrumento,
-            distorsion=acorde.distorsion
+            efectos=Efectos(
+                distorsion=acorde.distorsion
+            )
         )
 
         eventos.append(evento)

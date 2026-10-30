@@ -3,4 +3,8 @@ Tempo=120
 P A2 2 {G=ELECTRICA_LIMPIA DIST=5}
 P A2 2 {G=ACUSTICA}
 P A2 2 {G=ELECTRICA_DISTORSION DIST=8}
+# Acorde acústico
+A Am 4 {G=ACUSTICA}
 
+# Acorde eléctrico distorsionado
+A Am 4 {G=ELECTRICA_DISTORSION DIST=8}

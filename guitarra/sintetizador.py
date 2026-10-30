@@ -11,7 +11,7 @@ from guitarra.evento import EventoMusical
 from guitarra.tecnicas import TipoTecnica
 from guitarra.envolventes import aplicar_envolvente
 from guitarra.instrumentos import TipoGuitarra
-from guitarra.efectos import aplicar_distorsion
+from guitarra.efectos.distorsion import aplicar_distorsion
 
 # ============================================
 # Generador de una nota
@@ -226,7 +226,7 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             velocidad_rasgueo=evento.velocidad_rasgueo,
             duracion=evento.tiempos * (60 / tempo_bpm),
             instrumento=evento.instrumento,
-            distorsion=evento.distorsion
+            distorsion=evento.efectos.distorsion
         )
 
     elif evento.tecnica == TipoTecnica.PUNTEO:
@@ -238,7 +238,7 @@ def reproducir_evento(evento: EventoMusical, tempo_bpm):
             vibrato=evento.vibrato,
             duracion=duracion,
             instrumento=evento.instrumento,
-            distorsion=evento.distorsion
+            distorsion=evento.efectos.distorsion
         )
 
     elif evento.tecnica == TipoTecnica.SILENCIO:

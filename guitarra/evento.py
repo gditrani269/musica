@@ -4,6 +4,7 @@ from guitarra.tecnicas import TipoTecnica
 from guitarra.rasgueos import TipoRasgueo
 from config import VELOCIDAD_RASGUEO
 from guitarra.instrumentos import TipoGuitarra
+from guitarra.efectos.modelo import Efectos
 
 
 @dataclass
@@ -29,7 +30,7 @@ class EventoMusical:
 
     instrumento: TipoGuitarra = TipoGuitarra.ACUSTICA
 
-    distorsion: float = 0.0
+    efectos: Efectos = field(default_factory=Efectos)
 
     def __str__(self):
 
